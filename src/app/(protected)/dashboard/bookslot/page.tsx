@@ -1,3 +1,4 @@
+"use client"
 import SlotBookingPage from "@/components/pages/AppointmentBookingpage";
 import { AppointmentBookingColumn } from "@/components/tables/appoitmentstable";
 

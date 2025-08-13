@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { slotBookingZodType } from "@/type/schema";
 import { ColumnDef } from "@tanstack/react-table";
 
