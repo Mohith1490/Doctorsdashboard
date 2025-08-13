@@ -1,17 +1,14 @@
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Appontiment Booking",
+  description: "Book your appointement",
+};
 
-
-export default function BookingLayout({
+export default async function DistributorLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body
-      >
-        {children}
-      </body>
-    </html>
-  );
+}) {
+ return <>{children}</>;
 }
