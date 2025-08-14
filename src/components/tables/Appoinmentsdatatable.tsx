@@ -23,6 +23,10 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
+import { DataTableViewOptions } from './data-table-view-options';
+import { DataTableFacetedFilter } from './data-table-faceted-filter';
+import { Button } from '../ui/button';
+import { X } from 'lucide-react';
 
 interface AppointmentDataType<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -56,9 +60,12 @@ export function AppointmentDataTable<TData, TValue>(
         },
     });
 
+    // reset filters
+    const isFiltered = table.getState().columnFilters.length > 0;
+
     return (
         <>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 p-3">
                 <div>
                     <div className="flex items-center py-4">
                         <Input
@@ -69,8 +76,26 @@ export function AppointmentDataTable<TData, TValue>(
                             }
                             className="max-w-sm"
                         />
+                        {table.getColumn("category") && (
+                            <DataTableFacetedFilter
+                                column={table.getColumn("category")}
+                                title="Category"
+                                options={CATEGORYES}
+                            />
+                        )}
+                        {isFiltered && (
+                            <Button
+                                variant="ghost"
+                                onClick={() => table.resetColumnFilters()}
+                                className="h-8 px-2 lg:px-3 flex justify-center items-center gap-2"
+                            >
+                                Reset
+                                <X width={16} />
+                            </Button>
+                        )}
+                        <DataTableViewOptions table={table} />
                     </div>
-                    <div className="rounded-md border">
+                    <div className="rounded-md border p-3">
                         <Table>
                             <TableHeader>
                                 {table.getHeaderGroups().map((headerGroup) => (
@@ -126,3 +151,29 @@ export function AppointmentDataTable<TData, TValue>(
         </>
     )
 }
+
+
+
+
+const CATEGORYES = [
+    {
+        value: "Dentist",
+        label: "Dentist",
+    },
+    {
+        value: "Dermatologist",
+        label: "Dermatologist"
+    },
+    {
+        value: "Cardiologist",
+        label: "Cardiologist",
+    },
+    {
+        value: "Pediatrician",
+        label: "Pediatrician",
+    },
+    {
+        value: "Orthopedic",
+        label: "Orthopedic",
+    },
+]

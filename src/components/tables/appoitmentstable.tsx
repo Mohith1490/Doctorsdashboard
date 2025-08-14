@@ -1,14 +1,21 @@
 "use client"
 import { slotBookingZodType } from "@/type/schema";
 import { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "./data-table-column-header";
 
 export const AppointmentBookingColumn: ColumnDef<slotBookingZodType>[] = [
   {
     accessorKey: "name",
+    header:({column})=>{
+    return  <DataTableColumnHeader column={column} title="Name"  />
+    },
     cell: ({ row }) => row.getValue("name"),
   },
   {
     accessorKey: "location",
+    header:({column})=>{
+    return  <DataTableColumnHeader column={column} title="Location"  />
+    },
     cell: ({ row }) => row.getValue("location"),
   },
   {
@@ -21,14 +28,23 @@ export const AppointmentBookingColumn: ColumnDef<slotBookingZodType>[] = [
   },
   {
     accessorKey: "category",
+    header:({column})=>{
+    return  <DataTableColumnHeader column={column} title="Category"  />
+    },
     cell: ({ row }) => row.getValue("category"),
   },
   {
     accessorKey: "time",
+    header:({column})=>{
+    return  <DataTableColumnHeader column={column} title="Time"  />
+    },
     cell: ({ row }) => row.getValue("time"),
   },
   {
     accessorKey: "date",
+    header:({column})=>{
+    return  <DataTableColumnHeader column={column} title="date"  />
+    },
     cell: ({ row }) =>{
     const date:Date =   row.getValue("date");
     return date.toLocaleDateString();
@@ -37,5 +53,9 @@ export const AppointmentBookingColumn: ColumnDef<slotBookingZodType>[] = [
   {
     accessorKey: "email",
     cell: ({ row }) => row.getValue("email"),
+  },
+  {
+    accessorKey: "note",
+    cell: ({ row }) => row.getValue("note"),
   },
 ];

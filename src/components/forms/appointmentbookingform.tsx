@@ -23,8 +23,9 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { slotBookingZodSchema, slotBookingZodType } from "@/type/schema";
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Textarea } from "../ui/textarea";
 
 
 
@@ -51,6 +52,7 @@ export default function AppointmentBookingForm() {
             category: "",
             date: new Date(),
             time: "",
+            note: "",
             age: 0,
             phonenumber: 0,
             email: "",
@@ -70,74 +72,89 @@ export default function AppointmentBookingForm() {
                     Book Slot
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="w-full max-w-3xl" >
                 <DialogHeader className="font-bold text-xl">
                     Book an Appointment
+                    <DialogTitle className="font-medium text-sm" >Book an appointment from below dates</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        {/* Date Picker */}
-                        <FormField
-                            control={form.control}
-                            name="date"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>Select Date</FormLabel>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <FormControl>
-                                                <Button
-                                                    variant={"outline"}
-                                                    className={cn(
-                                                        "w-[240px] justify-start text-left font-normal"
-                                                    )}
-                                                >
-                                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                                    {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                                                </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
-                                            <Calendar
-                                                mode="single"
-                                                selected={field.value}
-                                                onSelect={field.onChange}
-                                                disabled={(date) => date < new Date()}
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 grid grid-cols-2 gap-10 ">
+                        <div className="w-full space-y-5" >
+                            {/* Date Picker */}
+                            <FormField
+                                control={form.control}
+                                name="date"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-col">
+                                        <FormLabel>Select Date</FormLabel>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <FormControl>
+                                                    <Button
+                                                        variant={"outline"}
+                                                        className={cn(
+                                                            "w-[240px] justify-start text-left font-normal"
+                                                        )}
+                                                    >
+                                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                                        {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto p-0" align="start">
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={field.value}
+                                                    onSelect={field.onChange}
+                                                    disabled={(date) => date < new Date()}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        {/* Time Slot Picker */}
-                        <FormField
-                            control={form.control}
-                            name="time"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Select Time</FormLabel>
-                                    <FormControl>
-                                        <div className="grid grid-cols-3 gap-2">
-                                            {timeSlots.map((slot) => (
-                                                <Button
-                                                    key={slot}
-                                                    type="button"
-                                                    variant={field.value === slot ? "default" : "outline"}
-                                                    onClick={() => field.onChange(slot)}
-                                                >
-                                                    {slot}
-                                                </Button>
-                                            ))}
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <div className="w-full grid grid-cols-2 gap-6" >
+                            {/* Time Slot Picker */}
+                            <FormField
+                                control={form.control}
+                                name="time"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Select Time</FormLabel>
+                                        <FormControl>
+                                            <div className="grid grid-cols-3 gap-2">
+                                                {timeSlots.map((slot) => (
+                                                    <Button
+                                                        key={slot}
+                                                        type="button"
+                                                        variant={field.value === slot ? "default" : "outline"}
+                                                        onClick={() => field.onChange(slot)}
+                                                    >
+                                                        {slot}
+                                                    </Button>
+                                                ))}
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="note"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Note</FormLabel>
+                                        <FormControl>
+                                            <Textarea placeholder="Note..." {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="w-full grid grid-cols-1 gap-2" >
                             <FormField
                                 control={form.control}
                                 name="name"
@@ -239,7 +256,7 @@ export default function AppointmentBookingForm() {
                             />
                         </div>
 
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" className="w-full col-start-2">
                             Confirm Booking
                         </Button>
                     </form>

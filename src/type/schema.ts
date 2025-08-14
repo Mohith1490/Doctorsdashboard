@@ -6,6 +6,7 @@ export const slotBookingZodSchema = z.object({
     category:z.string(),
     age:z.number(),
     phonenumber:z.number(),
+    note:z.string(),
     date: z.date(),
     time: z.string().nonempty("Please select a time"),
     email: z.string().email("Invalid email address"),
