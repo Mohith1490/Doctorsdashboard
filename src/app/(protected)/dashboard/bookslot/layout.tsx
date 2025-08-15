@@ -1,3 +1,5 @@
+import { RoleGate } from "@/components/auth/role-gate";
+import { UserRole } from "@/type/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,5 +12,5 @@ export default async function DistributorLayout({
 }: {
   children: React.ReactNode;
 }) {
- return <>{children}</>;
+ return <RoleGate allowedUser={[UserRole.ADMIN, UserRole.SUPER_ADMIN]}>{children}</RoleGate>;
 }
