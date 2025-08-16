@@ -4,7 +4,7 @@ import Image from "next/image";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Avatar from "@/avatars/avatar1.svg";
+import Avatar from "@/assests/avatars/avatar1.svg";
 import { ColumnDef } from "@tanstack/react-table";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { SettingsSchema } from "@/type/schema";
@@ -86,10 +86,10 @@ const SettingsPageComponents = <TData extends User, TValue extends object>({
 
   return (
     <div className="w-full px-4 md:px-12 py-10">
-      <div className="grid gap-10 md:grid-cols-2">
+      <div className="grid gap-10 grid-cols-1 md:grid-cols-3">
         {/* Profile Card */}
         <div>
-          <Card className="flex flex-col items-center md:w-1/2 justify-self-end  ">
+          <Card className="flex flex-col items-center w-[90%] self-center justify-self-end  ">
             <CardHeader className="w-full text-center">
               <div className="flex flex-col items-center gap-4">
                 <Image
@@ -101,13 +101,13 @@ const SettingsPageComponents = <TData extends User, TValue extends object>({
                 />
                 <CardTitle className="text-2xl font-semibold">{user?.name}</CardTitle>
                 <CardDescription className="text-sm">{user?.email}</CardDescription>
-                <Badge variant="outline" className="mt-2 px-3 py-2">
-                  {user?.role}
-                </Badge>
               </div>
             </CardHeader>
 
-            <CardContent className="w-full flex justify-center py-4">
+            <CardContent className="w-full flex justify-center py-4 items-center space-x-6">
+              <Badge variant="outline" className="px-3 py-2  bg-black text-white ">
+                {user?.role}
+              </Badge>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="outline">Edit Profile</Button>
@@ -119,6 +119,7 @@ const SettingsPageComponents = <TData extends User, TValue extends object>({
                       Make changes to your profile below. Click save when you&apos;re done.
                     </DialogDescription>
                   </DialogHeader>
+
                   <Form {...form}>
                     <form
                       className="space-y-4"
@@ -215,9 +216,9 @@ const SettingsPageComponents = <TData extends User, TValue extends object>({
           </Card>
         </div>
 
-        {/* Admin Table Card */}
+        {/* Detials of ADMIN and SUPER_ADMIN */}
         <RoleGate2 allowedUser={[UserRole.SUPER_ADMIN]}>
-          <Card>
+          <Card className="col-span-2" >
             <CardHeader>
               <CardTitle>Admin Members</CardTitle>
               <CardDescription>

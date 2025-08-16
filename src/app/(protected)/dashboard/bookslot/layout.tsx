@@ -12,5 +12,5 @@ export default async function DistributorLayout({
 }: {
   children: React.ReactNode;
 }) {
- return <RoleGate allowedUser={[UserRole.ADMIN, UserRole.SUPER_ADMIN]}>{children}</RoleGate>;
+ return <RoleGate allowedUser={[UserRole.SUPER_ADMIN]}>{children}</RoleGate>;
 }

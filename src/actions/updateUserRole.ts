@@ -25,7 +25,7 @@ export const updateUserRole = async (values: z.infer<typeof UserRoleUpdateSchema
 
     await users.updateOne(
         {_id:dbUser._id},
-        {$where:{id:dbUser._id}},
+        {$set:{role:values.role}}
         )
 
     return {success: "User role updated successfully!"}

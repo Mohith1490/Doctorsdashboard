@@ -1,25 +1,6 @@
 import z from "zod";
 import { UserRole } from "./types";
 
-export const slotBookingZodSchema = z.object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    location:z.string(),
-    category:z.string(),
-    age:z.number(),
-    phonenumber:z.number(),
-    note:z.string(),
-    date: z.date(),
-    time: z.string().nonempty("Please select a time"),
-    email: z.string().email("Invalid email address"),
-});
-
-export type slotBookingZodType = z.infer<typeof slotBookingZodSchema>
-
-export const UserRoleUpdateSchema = z.object({
-  email: z.string().email(),
-  role: z.nativeEnum(UserRole),
-});
-
 
 export const SettingsSchema = z.object({
   name: z.optional(z.string()),
@@ -68,7 +49,41 @@ export const RegisterSchema = z.object({
   })
 });
 
+export const UserRoleUpdateSchema = z.object({
+  email: z.string().email(),
+  role: z.nativeEnum(UserRole),
+});
 
 export const ResetSchema = z.object({
   email: z.string().email({ message: "Email is required!" }),
 });
+
+export const slotBookingZodSchema = z.object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    location:z.string(),
+    doctor:z.string(),
+    doctorId:z.string(),
+    category:z.string(),
+    age:z.number(),
+    slot:z.object({
+      date:z.date(),
+      time:z.string(),
+    }),
+    phonenumber:z.number(),
+    note:z.string(),
+    email: z.string().email("Invalid email address"),
+});
+
+export type slotBookingZodType = z.infer<typeof slotBookingZodSchema>
+
+
+export const DoctorsformSchema = z.object({
+  name:z.string(),
+  email:z.email(),
+  password:z.string(),
+  phonenumber:z.number(),
+  specialization:z.string(),
+  bio:z.string()
+})
+
+export type DoctorsformType = z.infer<typeof DoctorsformSchema>

@@ -2,8 +2,6 @@ import SettingsPageComponents from "@/components/pages/settings";
 import { userColumns } from "@/components/tables/user-column";
 import { UserRole } from "@/type/types";
 
-
-
 export default function SettingsPage(){
     return(
         <>

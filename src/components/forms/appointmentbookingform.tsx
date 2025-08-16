@@ -26,6 +26,8 @@ import { slotBookingZodSchema, slotBookingZodType } from "@/type/schema";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
+import useBookAppointment from "@/data/appointment/book-appointment";
+import { useState } from "react";
 
 
 
@@ -44,28 +46,42 @@ const timeSlots = [
 
 
 export default function AppointmentBookingForm() {
+    const [isDialogOpen, setisDialogOpen] = useState<boolean>(false);
+    const mutation = useBookAppointment();
     const form = useForm<z.infer<typeof slotBookingZodSchema>>({
         resolver: zodResolver(slotBookingZodSchema),
         defaultValues: {
             name: "",
             location: "",
             category: "",
-            date: new Date(),
-            time: "",
+            slot: {
+                date: new Date(),
+                time: "",
+            },
             note: "",
             age: 0,
             phonenumber: 0,
             email: "",
+            doctor: "",
+            doctorId: "",
         },
     });
 
     const onSubmit = (values: slotBookingZodType) => {
         console.log("Booking Data:", values);
-        form.reset();
+        mutation.mutate(values, {
+            onSuccess: () => {
+                setisDialogOpen(false);
+                form.reset();
+            }
+        });
     };
 
     return (
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={(open) => {
+            setisDialogOpen(open);
+            form.reset()
+        }}>
             <DialogTrigger>
                 <Button size={"sm"} className="rounded-sm" >
                     <CirclePlus />
@@ -78,12 +94,51 @@ export default function AppointmentBookingForm() {
                     <DialogTitle className="font-medium text-sm" >Book an appointment from below dates</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 grid grid-cols-2 gap-10 ">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 grid grid-cols-2 gap-10 mt-5">
                         <div className="w-full space-y-5" >
                             {/* Date Picker */}
+                            <div className="grid grid-cols-2 space-x-2" >
+                                <FormField
+                                    control={form.control}
+                                    name="doctor"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                        <FormLabel>Doctor</FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value} >
+                                            <FormControl>
+                                                <SelectTrigger className="w-full" >
+                                                    <SelectValue placeholder="select doctor" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value={"category1"}>category1</SelectItem>
+                                                <SelectItem value={"category2"}>category2</SelectItem>
+                                                <SelectItem value={"category3"}>category3</SelectItem>
+                                                <SelectItem value={"category4"}>category4</SelectItem>
+                                                <SelectItem value={"category5"}>category5</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="doctorId"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Doctor Id</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="Doctor Id" readOnly {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
                             <FormField
                                 control={form.control}
-                                name="date"
+                                name="slot.date"
                                 render={({ field }) => (
                                     <FormItem className="flex flex-col">
                                         <FormLabel>Select Date</FormLabel>
@@ -118,7 +173,7 @@ export default function AppointmentBookingForm() {
                             {/* Time Slot Picker */}
                             <FormField
                                 control={form.control}
-                                name="time"
+                                name="slot.time"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Select Time</FormLabel>

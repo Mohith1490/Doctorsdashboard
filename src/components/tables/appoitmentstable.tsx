@@ -38,7 +38,7 @@ export const AppointmentBookingColumn: ColumnDef<slotBookingZodType>[] = [
     header:({column})=>{
     return  <DataTableColumnHeader column={column} title="Time"  />
     },
-    cell: ({ row }) => row.getValue("time"),
+    cell: ({ row }) => row.original.slot.time,
   },
   {
     accessorKey: "date",
@@ -46,13 +46,13 @@ export const AppointmentBookingColumn: ColumnDef<slotBookingZodType>[] = [
     return  <DataTableColumnHeader column={column} title="date"  />
     },
     cell: ({ row }) =>{
-    const date:Date =   row.getValue("date");
-    return date.toLocaleDateString();
+    const date:Date =   row.original.slot.date;
+    return new Date(date).toLocaleDateString();
     },
   },
   {
     accessorKey: "email",
-    cell: ({ row }) => row.getValue("email"),
+    cell: ({ row }) => row.original.email,
   },
   {
     accessorKey: "note",
