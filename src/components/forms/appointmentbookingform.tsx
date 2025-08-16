@@ -30,21 +30,6 @@ import useBookAppointment from "@/data/appointment/book-appointment";
 import { useState } from "react";
 
 
-
-// ---- Time slots ----
-const timeSlots = [
-    "09:00 AM",
-    "09:30 AM",
-    "10:00 AM",
-    "10:30 AM",
-    "11:00 AM",
-    "02:00 PM",
-    "02:30 PM",
-    "03:00 PM",
-    "03:30 PM",
-];
-
-
 export default function AppointmentBookingForm() {
     const [isDialogOpen, setisDialogOpen] = useState<boolean>(false);
     const mutation = useBookAppointment();
@@ -88,45 +73,45 @@ export default function AppointmentBookingForm() {
                     Book Slot
                 </Button>
             </DialogTrigger>
-            <DialogContent className="w-full max-w-3xl" >
+            <DialogContent className="w-full max-w-3xl h-screen md:h-fit overflow-y-scroll " >
                 <DialogHeader className="font-bold text-xl">
                     Book an Appointment
                     <DialogTitle className="font-medium text-sm" >Book an appointment from below dates</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 grid grid-cols-2 gap-10 mt-5">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-5">
                         <div className="w-full space-y-5" >
                             {/* Date Picker */}
-                            <div className="grid grid-cols-2 space-x-2" >
+                            <span className="grid grid-cols-1 md:grid-cols-2 space-x-2" >
                                 <FormField
                                     control={form.control}
                                     name="doctor"
                                     render={({ field }) => (
                                         <FormItem>
-                                        <FormLabel>Doctor</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value} >
-                                            <FormControl>
-                                                <SelectTrigger className="w-full" >
-                                                    <SelectValue placeholder="select doctor" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value={"category1"}>category1</SelectItem>
-                                                <SelectItem value={"category2"}>category2</SelectItem>
-                                                <SelectItem value={"category3"}>category3</SelectItem>
-                                                <SelectItem value={"category4"}>category4</SelectItem>
-                                                <SelectItem value={"category5"}>category5</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
+                                            <FormLabel>Doctor</FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value} >
+                                                <FormControl>
+                                                    <SelectTrigger className="w-full" >
+                                                        <SelectValue placeholder="select doctor" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem value={"category1"}>category1</SelectItem>
+                                                    <SelectItem value={"category2"}>category2</SelectItem>
+                                                    <SelectItem value={"category3"}>category3</SelectItem>
+                                                    <SelectItem value={"category4"}>category4</SelectItem>
+                                                    <SelectItem value={"category5"}>category5</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
                                     )}
                                 />
                                 <FormField
                                     control={form.control}
                                     name="doctorId"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="mt-2 md:mt-0" >
                                             <FormLabel>Doctor Id</FormLabel>
                                             <FormControl>
                                                 <Input placeholder="Doctor Id" readOnly {...field} />
@@ -135,7 +120,7 @@ export default function AppointmentBookingForm() {
                                         </FormItem>
                                     )}
                                 />
-                            </div>
+                            </span>
                             <FormField
                                 control={form.control}
                                 name="slot.date"
@@ -177,20 +162,24 @@ export default function AppointmentBookingForm() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Select Time</FormLabel>
-                                        <FormControl>
-                                            <div className="grid grid-cols-3 gap-2">
-                                                {timeSlots.map((slot) => (
-                                                    <Button
-                                                        key={slot}
-                                                        type="button"
-                                                        variant={field.value === slot ? "default" : "outline"}
-                                                        onClick={() => field.onChange(slot)}
-                                                    >
-                                                        {slot}
-                                                    </Button>
-                                                ))}
-                                            </div>
-                                        </FormControl>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value} >
+                                            <FormControl>
+                                                <SelectTrigger className="w-full" >
+                                                    <SelectValue placeholder="select category" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="9:30 " >9:30 </SelectItem>
+                                                <SelectItem value="10:30 " >10:30 </SelectItem>
+                                                <SelectItem value="11:30 " >11:30 </SelectItem>
+                                                <SelectItem value="12:30 " >12:30 </SelectItem>
+                                                <SelectItem value="13:30 " >13:30 </SelectItem>
+                                                <SelectItem value="14:30 " >14:30 </SelectItem>
+                                                <SelectItem value="15:30 " >15:30 </SelectItem>
+                                                <SelectItem value="16:30 " >16:30 </SelectItem>
+                                                <SelectItem value="17:30 " >17:30 </SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -209,6 +198,7 @@ export default function AppointmentBookingForm() {
                                 )}
                             />
                         </div>
+
                         <div className="w-full grid grid-cols-1 gap-2" >
                             <FormField
                                 control={form.control}
@@ -311,7 +301,7 @@ export default function AppointmentBookingForm() {
                             />
                         </div>
 
-                        <Button type="submit" className="w-full col-start-2">
+                        <Button type="submit" className="w-full md:col-start-2 col-start-1">
                             Confirm Booking
                         </Button>
                     </form>
