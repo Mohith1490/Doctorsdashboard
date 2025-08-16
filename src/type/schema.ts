@@ -79,6 +79,7 @@ export type slotBookingZodType = z.infer<typeof slotBookingZodSchema>
 
 export const DoctorsformSchema = z.object({
   name:z.string(),
+  doctorId:z.string(),
   email:z.email(),
   password:z.string(),
   phonenumber:z.number(),

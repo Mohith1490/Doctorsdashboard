@@ -3,8 +3,8 @@ import { slotBookingZodType } from "@/type/schema";
 import { ColumnDef } from "@tanstack/react-table";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { DoctorsPersonalDataTable } from "../tables/DoctorsPersonalDatatable";
-import { useGetAllAppointments } from "@/data/appointment/get-all-appointments";
 import { useSession } from "next-auth/react";
+import { useGetPersonalAppointments } from "@/data/addDoctors/get-personal-appointments";
 
 
 interface ColumnDataType<
@@ -16,7 +16,8 @@ interface ColumnDataType<
 
 export default function DoctorsPage({ columns }: ColumnDataType<slotBookingZodType>) {
   const {data:session} = useSession()
-  const {data: DoctorsDetail,isLoading,isError} = useGetAllAppointments();
+  const {data: PersonalAppointments,isLoading,isError} = useGetPersonalAppointments(session?.user?.id || "");
+  
   if(isLoading){
     return (
       <>
@@ -43,7 +44,7 @@ export default function DoctorsPage({ columns }: ColumnDataType<slotBookingZodTy
           </div>
         </CardHeader>
         <CardContent>
-          <DoctorsPersonalDataTable columns={columns} data={DoctorsDetail?.data ?? []} />
+          <DoctorsPersonalDataTable columns={columns} data={PersonalAppointments?.data ?? []} />
         </CardContent>
       </Card>
     </>

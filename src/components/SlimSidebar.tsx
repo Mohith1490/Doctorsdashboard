@@ -6,7 +6,6 @@ import Link from "next/link";
 import {
   CalendarClock,
   Home,
-  Package2,
   PanelLeft,
   Settings,
   Stethoscope,

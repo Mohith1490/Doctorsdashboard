@@ -22,17 +22,19 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { slotBookingZodSchema, slotBookingZodType } from "@/type/schema";
+import { DoctorsformType, slotBookingZodSchema, slotBookingZodType } from "@/type/schema";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import useBookAppointment from "@/data/appointment/book-appointment";
 import { useState } from "react";
+import { useGetAllDoctors } from "@/data/addDoctors/get-all-doctors";
 
 
 export default function AppointmentBookingForm() {
     const [isDialogOpen, setisDialogOpen] = useState<boolean>(false);
     const mutation = useBookAppointment();
+    const { data: DoctorsList, isLoading, isError } = useGetAllDoctors()
     const form = useForm<z.infer<typeof slotBookingZodSchema>>({
         resolver: zodResolver(slotBookingZodSchema),
         defaultValues: {
@@ -51,7 +53,6 @@ export default function AppointmentBookingForm() {
             doctorId: "",
         },
     });
-
     const onSubmit = (values: slotBookingZodType) => {
         console.log("Booking Data:", values);
         mutation.mutate(values, {
@@ -68,9 +69,9 @@ export default function AppointmentBookingForm() {
             form.reset()
         }}>
             <DialogTrigger>
-                <Button size={"sm"} className="rounded-sm" >
-                    <CirclePlus />
-                    Book Slot
+                <Button className="flex justify-center items-center gap-1">
+                    <CirclePlus className="h-4 w-4" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Book Appointment</span>
                 </Button>
             </DialogTrigger>
             <DialogContent className="w-full max-w-3xl h-screen md:h-fit overflow-y-scroll " >
@@ -89,18 +90,31 @@ export default function AppointmentBookingForm() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Doctor</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value} >
+                                            <Select onValueChange={(selectedId) => {
+                                                const selectedDoctor = DoctorsList?.data.find(
+                                                    (d: DoctorsformType) => d.name === selectedId
+                                                )
+                                                form.setValue("doctor", selectedDoctor?.name || "")
+                                                form.setValue("doctorId", selectedDoctor?.doctorId || "")
+                                                field.onChange(selectedDoctor?.name || "")
+                                            }} defaultValue={field.value}>
                                                 <FormControl>
-                                                    <SelectTrigger className="w-full" >
-                                                        <SelectValue placeholder="select doctor" />
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="Select doctor" />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
-                                                    <SelectItem value={"category1"}>category1</SelectItem>
-                                                    <SelectItem value={"category2"}>category2</SelectItem>
-                                                    <SelectItem value={"category3"}>category3</SelectItem>
-                                                    <SelectItem value={"category4"}>category4</SelectItem>
-                                                    <SelectItem value={"category5"}>category5</SelectItem>
+                                                    {isLoading ? (
+                                                        <div>Loading...</div>
+                                                    ) : isError ? (
+                                                        <div>Error loading doctors</div>
+                                                    ) : (
+                                                        DoctorsList?.data.map((doctor: DoctorsformType) => (
+                                                            <SelectItem key={doctor.doctorId} value={doctor.name}>
+                                                                {doctor.name}
+                                                            </SelectItem>
+                                                        ))
+                                                    )}
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage />

@@ -18,6 +18,7 @@ export default function AddDoctorForm() {
     const form = useForm({
         defaultValues: {
             name: "",
+            doctorId: "",
             phonenumber: 0,
             email: "",
             password: "",
@@ -41,12 +42,12 @@ export default function AddDoctorForm() {
                 form.reset()
             }}>
                 <DialogTrigger>
-                    <Button>
-                        <CirclePlus />
-                        Add Doctor
+                    <Button className="flex justify-center items-center gap-1">
+                        <CirclePlus className="h-4 w-4" />
+                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add Doctor</span>
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="w-full max-w-3xl h-screen overflow-y-scroll ">
+                <DialogContent className="w-full max-w-3xl h-screen md:h-fit overflow-y-scroll ">
                     <DialogHeader className="font-bold text-xl" >
                         Add Doctor
                         <DialogTitle>Add Doctor with below required fields</DialogTitle>
@@ -61,6 +62,19 @@ export default function AddDoctorForm() {
                                         <FormLabel>Name </FormLabel>
                                         <FormControl>
                                             <Input placeholder="name" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="doctorId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Doctor ID </FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="doctor Id" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -131,7 +145,7 @@ export default function AddDoctorForm() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="md:col-start-2"  >
+                            <Button type="submit" className="md:col-start-2 self-center "  >
                                 Submit
                             </Button>
                         </form>

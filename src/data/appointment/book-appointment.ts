@@ -19,6 +19,7 @@ export default function useBookAppointment() {
             }
             toast.success("Added Appointment", { description: data.message })
             queryclient.invalidateQueries({queryKey:["getAllAppointments"]})
+            queryclient.invalidateQueries({queryKey:["getPersonalAppointments"]})
             return data;    
         },
         onError: (error) => {

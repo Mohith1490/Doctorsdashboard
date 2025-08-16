@@ -1,29 +1,10 @@
-"use client"
-import addDoctor from "@/actions/addDoctors/add-doctor";
-import { DoctorsformType } from "@/type/schema";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import getPersonalAppointments from "@/actions/addDoctors/get-personal-appointments";
 
-type onSuccessDataType = {
-    success: boolean;
-    message: string;
-}
-
-export default function useAddDoctor() {
-    const queryclient = useQueryClient();
-    return useMutation({
-        mutationFn: async (values: DoctorsformType) => addDoctor(values) ,
-        onSuccess: (data: onSuccessDataType) => {
-            if (!data.success) {
-                toast.error("Something went wrong", { description: data.message })
-            }
-            toast.success("Doctor added", { description: data.message })
-            queryclient.invalidateQueries({queryKey:["getAllDoctors"]})
-            return data;    
-        },
-        onError: (error) => {
-            console.error('Error posting data: on add distributor', error);
-        },
-
-    })
+export function useGetPersonalAppointments(id: string) {
+  return useQuery({
+    queryKey: ["getPersonalAppointments", id],
+    queryFn: () => getPersonalAppointments(id),
+    enabled: !!id,
+  });
 }

@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableViewOptions } from './data-table-view-options';
-import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { Button } from '../ui/button';
 import { X } from 'lucide-react';
 
@@ -88,7 +87,7 @@ export function DoctorsPersonalDataTable<TData, TValue>(
                         )}
                         <DataTableViewOptions table={table} />
                     </div>
-                    <div className="rounded-md border p-3">
+                    <div className="rounded-md border">
                         <Table>
                             <TableHeader>
                                 {table.getHeaderGroups().map((headerGroup) => (
